@@ -1,7 +1,0 @@
-{
-  "/builder-split/page": "app/builder-split/page.js",
-  "/pricing/page": "app/pricing/page.js",
-  "/login/page": "app/login/page.js",
-  "/forgot-password/page": "app/forgot-password/page.js",
-  "/dashboard/page": "app/dashboard/page.js"
-}

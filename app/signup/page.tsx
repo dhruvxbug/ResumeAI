@@ -44,13 +44,23 @@ export default function SignupPage() {
     setIsLoading(true)
 
     try {
-      // In a real app, this would be an API call to your registration endpoint
-      await new Promise((resolve) => setTimeout(resolve, 1500))
+      const response = await fetch("http://localhost:8000/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      })
 
-      // Simulate successful signup
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.message || data.error || "Registration failed")
+      }
+
+      localStorage.setItem("auth_token", data.access_token)
+      
       router.push("/dashboard")
-    } catch (err) {
-      setError("An error occurred during signup. Please try again.")
+    } catch (err: any) {
+      setError(err.message || "An error occurred during signup. Please try again.")
     } finally {
       setIsLoading(false)
     }

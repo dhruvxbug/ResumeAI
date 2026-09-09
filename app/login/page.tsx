@@ -36,13 +36,23 @@ export default function LoginPage() {
     setIsLoading(true)
 
     try {
-      // In a real app, this would be an API call to your authentication endpoint
-      await new Promise((resolve) => setTimeout(resolve, 1500))
+      const response = await fetch("http://localhost:8000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      })
 
-      // Simulate successful login
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.message || data.error || "Login failed")
+      }
+
+      localStorage.setItem("auth_token", data.access_token)
+      
       router.push("/dashboard")
-    } catch (err) {
-      setError("Invalid email or password. Please try again.")
+    } catch (err: any) {
+      setError(err.message || "Invalid email or password. Please try again.")
     } finally {
       setIsLoading(false)
     }
